@@ -1,0 +1,8 @@
+{
+  "venvPath": "sihh/backend",
+  "venv": "venv",
+  "extraPaths": [
+    "sihh/backend/venv/Lib/site-packages",
+    "sihh/backend"
+  ]
+}
