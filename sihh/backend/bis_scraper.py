@@ -134,7 +134,7 @@ SKIP_PATH_SUBSTRINGS = [
 
 USER_AGENT = (
     "Mozilla/5.0 (compatible; SIH2026-PS26107-ResearchBot/1.0; "
-    "educational hackathon project; contact: <put your team email here>)"
+    "educational hackathon project; contact: your.email@example.com)"
 )
 
 OUT_DIR = "data/raw"
