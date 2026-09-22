@@ -298,8 +298,41 @@ def call_local_ollama(messages: list, host: str = "http://localhost:11434") -> s
         print(f"[OmniLLM] Local Ollama fallback error: {e}")
     return None
 
-def omni_llm_generate(messages: list) -> str | None:
-    """Unified multi-tier API orchestrator: OpenRouter pool + Local Ollama."""
+def call_custom_openai_llm(messages: list, url: str, api_key: str, model_name: str) -> str | None:
+    """Executes completion against a custom OpenAI-compatible endpoint."""
+    headers = {
+        "Content-Type": "application/json"
+    }
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+
+    payload = {
+        "model": model_name,
+        "messages": messages,
+        "temperature": 0.2,
+        "max_tokens": 1500,
+    }
+    try:
+        res = requests.post(url, headers=headers, json=payload, timeout=25)
+        if res.status_code == 200:
+            data = res.json()
+            content = data["choices"][0]["message"]["content"].strip()
+            if content:
+                print(f"[OmniLLM] Answered using custom API model: {model_name}")
+                return content
+        else:
+            print(f"[OmniLLM] Custom API status: {res.status_code}, error: {res.text}")
+    except Exception as err:
+        print(f"[OmniLLM] Custom API error: {err}")
+    return None
+
+def omni_llm_generate(messages: list, custom_api_url: str | None = None, custom_api_key: str | None = None, custom_model: str | None = None) -> str | None:
+    """Unified multi-tier API orchestrator: Custom -> OpenRouter pool -> Local Ollama."""
+    if custom_api_url and custom_model:
+        answer = call_custom_openai_llm(messages, custom_api_url, custom_api_key or "", custom_model)
+        if answer:
+            return answer
+
     openrouter_key = os.getenv("OPENROUTER_API_KEY")
     if openrouter_key:
         answer = call_openrouter_llm(messages, openrouter_key)
@@ -381,7 +414,7 @@ def get_vectorstore_stats() -> dict:
         return {"status": "error", "error": str(e)}
 
 
-def generate_answer(query: str, history: list | None = None) -> dict:
+def generate_answer(query: str, history: list | None = None, top_k: int = 15, custom_api_url: str | None = None, custom_api_key: str | None = None, custom_model: str | None = None) -> dict:
     """End-to-end RAG workflow over BIS Knowledge Base."""
     initial_chunks = retrieve_chunks(query, top_k=40)
     if not initial_chunks:
@@ -446,7 +479,7 @@ def generate_answer(query: str, history: list | None = None) -> dict:
             messages.append({"role": msg["role"], "content": msg["content"]})
     messages.append({"role": "user", "content": query})
 
-    answer = omni_llm_generate(messages)
+    answer = omni_llm_generate(messages, custom_api_url, custom_api_key, custom_model)
 
     if not answer:
         # Fallback: return best chunks as raw text

@@ -540,14 +540,14 @@ Only the following three grades of gold are allowed to be hallmarked:
 
 ## HUID (Hallmark Unique Identification)
 Since July 1, 2021, every hallmarked article gets a 6-character alphanumeric HUID code. This is unique to each piece and can be verified via:
-- **BIS Care App** (Android/iOS)
-- **Website**: verify.bis.gov.in
+- **BIS Care App** (planned, pending access)
+- **Website**: [verify.bis.gov.in](https://verify.bis.gov.in)
 - **SMS**: Send HUID to 8130009727
 
 HUID provides complete traceability: jeweller, assaying centre, date, purity, and weight.
 
 ## Hallmarking Process
-1. **Jeweller Registration**: Jeweller registers with BIS online via manakonline.in
+1. **Jeweller Registration**: Jeweller registers with BIS online via [manakonline.in](https://www.manakonline.in)
 2. **Article Submission**: Jeweller submits articles to a BIS-recognized Assaying and Hallmarking Centre (AHC)
 3. **Testing**: AHC tests gold purity using XRF, fire assay, or cupellation
 4. **Hallmark Engraving**: If gold meets declared purity, AHC engraves the BIS hallmark and HUID
@@ -568,7 +568,7 @@ A BIS hallmark on gold jewellery consists of:
 
 ## Jeweller Registration
 - All jewellers selling gold jewellery must register with BIS
-- Registration is done online at manakonline.in
+- Registration is done online at [manakonline.in](https://www.manakonline.in)
 - Fee: Rs. 5,000 for single outlet, Rs. 3,000 for additional outlets
 - Registration is valid for 1 year and must be renewed
 
@@ -594,7 +594,7 @@ Under BIS Act 2016:
 ## Contact Information
 - **BIS Hallmarking Helpline**: 1800-11-4000 (toll-free)
 - **Email**: hallmarking@bis.gov.in
-- **Website**: www.bis.gov.in/hallmarking
+- **Website**: [www.bis.gov.in/hallmarking](https://www.bis.gov.in/hallmarking)
 """,
 
         "bis_product_certification_guide.txt": """# BIS Product Certification Schemes — Complete Guide
@@ -606,7 +606,7 @@ BIS operates multiple product certification schemes to ensure products manufactu
 This is the primary certification scheme for domestic manufacturers.
 
 ### How to Apply
-1. Visit www.manakonline.in
+1. Visit [www.manakonline.in](https://www.manakonline.in)
 2. Select "Apply for License" under Scheme-I
 3. Fill application form with: factory details, product details, manufacturing process
 4. Upload required documents: factory layout, process flow, equipment list
@@ -651,7 +651,7 @@ For IT and electronics products regulated by MeitY.
 - Hard disk drives (added 2026)
 
 ### CRS Process
-1. Apply online at www.crsbis.in
+1. Apply online at [www.crsbis.in](https://www.crsbis.in)
 2. Submit test reports from BIS-recognized lab
 3. BIS reviews application and test reports
 4. Registration granted for product model/variant
@@ -749,8 +749,8 @@ Quality Control Orders (QCOs) are orders issued by the Central Government under 
 - Several extension orders for implementation dates
 
 ## Important Links
-- QCO list: www.bis.gov.in/product-certification/products-under-compulsory-certification/
-- Apply for licence: www.manakonline.in
+- QCO list: [www.bis.gov.in/product-certification/products-under-compulsory-certification/](https://www.bis.gov.in/product-certification/products-under-compulsory-certification/)
+- Apply for licence: [www.manakonline.in](https://www.manakonline.in)
 """,
 
         "bis_act_2016_summary.txt": """# BIS Act 2016 — Summary and Key Provisions
@@ -822,13 +822,13 @@ A: The Bureau of Indian Standards (BIS) is the National Standards Body of India,
 A: ISI (Indian Standards Institution) mark is a certification mark issued by BIS. Products bearing the ISI mark have been tested and certified to conform to the relevant Indian Standard. It is mandatory for certain products and voluntary for others.
 
 **Q: How can I verify if a product has a genuine ISI mark?**
-A: You can verify at www.manakonline.in by entering the licence number printed below the ISI mark. You can also call BIS helpline 1800-11-4000.
+A: You can verify at [www.manakonline.in](https://www.manakonline.in) by entering the licence number printed below the ISI mark. You can also call BIS helpline 1800-11-4000.
 
 **Q: How to file a complaint about a substandard ISI marked product?**
 A: 
 1. Online: complaints@bis.gov.in
 2. Phone: 1800-11-4000 (toll-free)
-3. BIS Care App (Android/iOS)
+3. BIS Care App (planned, pending access)
 4. Written complaint to nearest BIS office
 
 ## Hallmarking
@@ -841,8 +841,8 @@ A: Only 14 carat (585 fineness), 18 carat (750 fineness), and 22 carat (916 fine
 
 **Q: How to check if my gold jewellery is genuinely hallmarked?**
 A: Check the HUID code using:
-- BIS Care App
-- verify.bis.gov.in
+- BIS Care App (planned, pending access)
+- [verify.bis.gov.in](https://verify.bis.gov.in)
 - SMS the HUID to 8130009727
 
 **Q: What is the hallmarking charge?**

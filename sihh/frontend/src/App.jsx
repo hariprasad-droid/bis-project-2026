@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { 
   Send, ThumbsUp, ThumbsDown, Mic, MicOff, Volume2, VolumeX, 
   Copy, Check, RotateCw, Plus, Paperclip, Sparkles, Edit3,
-  FileText, ExternalLink, MessageSquarePlus, Shield, ShieldCheck, ShieldAlert
+  FileText, ExternalLink, MessageSquarePlus, Shield, ShieldCheck, ShieldAlert, Settings, X
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -23,6 +23,17 @@ function App() {
   const [loadingStartTime, setLoadingStartTime] = useState(null);
   const [thinkingSeconds, setThinkingSeconds] = useState(0);
   const [activeTab, setActiveTab] = useState('chat');
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [apiSettings, setApiSettings] = useState(() => {
+    const saved = localStorage.getItem('bisApiSettings');
+    return saved ? JSON.parse(saved) : { url: '', key: '', model: '' };
+  });
+
+  const saveApiSettings = (settings) => {
+    setApiSettings(settings);
+    localStorage.setItem('bisApiSettings', JSON.stringify(settings));
+    setIsSettingsOpen(false);
+  };
 
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -164,7 +175,10 @@ function App() {
         body: JSON.stringify({
           message: textToSend,
           language,
-          session_id: sessionId
+          session_id: sessionId,
+          custom_api_url: apiSettings.url || undefined,
+          custom_api_key: apiSettings.key || undefined,
+          custom_model: apiSettings.model || undefined
         }),
       });
 
@@ -212,7 +226,10 @@ function App() {
         body: JSON.stringify({
           message: lastUserText,
           language,
-          session_id: sessionId
+          session_id: sessionId,
+          custom_api_url: apiSettings.url || undefined,
+          custom_api_key: apiSettings.key || undefined,
+          custom_model: apiSettings.model || undefined
         }),
       });
       const data = await response.json();
@@ -308,6 +325,9 @@ function App() {
               <option value="bn">Bengali</option>
             </select>
           </div>
+          <button className="icon-btn" onClick={() => setIsSettingsOpen(true)} title="Settings">
+            <Settings size={20} />
+          </button>
         </div>
       </header>
 
@@ -327,8 +347,8 @@ function App() {
               <button onClick={() => handleSend("How to get ISI mark for my product?")}>
                 ✅ ISI Mark process
               </button>
-              <button onClick={() => handleSend("What are the requirements for packaged drinking water?")}>
-                💧 Drinking water standards
+              <button onClick={() => handleSend("What is the permissible limit of Lead in Packaged Drinking Water as per IS 14543?")}>
+                💧 IS 14543 Drinking Water
               </button>
               <button onClick={() => handleSend("What is CRS scheme for electronics?")}>
                 📱 CRS for electronics
@@ -506,6 +526,69 @@ function App() {
       </React.Fragment>
       ) : (
         <ScraperPortal />
+      )}
+
+      {/* Settings Modal */}
+      {isSettingsOpen && (
+        <div className="modal-overlay" style={{
+          position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex',
+          alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <div className="modal-content" style={{
+            backgroundColor: 'var(--bg-card, #ffffff)', padding: '24px',
+            borderRadius: '12px', width: '90%', maxWidth: '400px',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.1)'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h2 style={{ margin: 0, fontSize: '1.25rem' }}>API Settings</h2>
+              <button onClick={() => setIsSettingsOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)' }}>
+                <X size={20} />
+              </button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div>
+                <label style={{ display: 'block', marginBottom: '4px', fontSize: '0.9rem', fontWeight: 500 }}>Custom API URL</label>
+                <input 
+                  type="text" 
+                  value={apiSettings.url} 
+                  onChange={e => setApiSettings({...apiSettings, url: e.target.value})}
+                  placeholder="https://api.openai.com/v1/chat/completions"
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '4px', fontSize: '0.9rem', fontWeight: 500 }}>API Key</label>
+                <input 
+                  type="password" 
+                  value={apiSettings.key} 
+                  onChange={e => setApiSettings({...apiSettings, key: e.target.value})}
+                  placeholder="sk-..."
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }}
+                />
+              </div>
+              <div>
+                <label style={{ display: 'block', marginBottom: '4px', fontSize: '0.9rem', fontWeight: 500 }}>Model Name</label>
+                <input 
+                  type="text" 
+                  value={apiSettings.model} 
+                  onChange={e => setApiSettings({...apiSettings, model: e.target.value})}
+                  placeholder="gpt-3.5-turbo"
+                  style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }}
+                />
+              </div>
+              <button 
+                onClick={() => saveApiSettings(apiSettings)}
+                style={{
+                  background: 'var(--primary-color, #2563eb)', color: 'white', border: 'none',
+                  padding: '10px', borderRadius: '6px', cursor: 'pointer', fontWeight: 600, marginTop: '8px'
+                }}
+              >
+                Save Settings
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

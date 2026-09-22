@@ -51,6 +51,9 @@ class ChatRequest(BaseModel):
     message: str
     language: str = "en"
     session_id: Optional[str] = None
+    custom_api_url: Optional[str] = None
+    custom_api_key: Optional[str] = None
+    custom_model: Optional[str] = None
 
 class FeedbackRequest(BaseModel):
     message_id: int
@@ -111,7 +114,13 @@ async def chat_endpoint(req: ChatRequest, db: Session = Depends(get_db)):
     db.refresh(user_msg)
 
     # Generate answer
-    rag_result = generate_answer(user_message_text, history_list)
+    rag_result = generate_answer(
+        user_message_text,
+        history_list,
+        custom_api_url=req.custom_api_url,
+        custom_api_key=req.custom_api_key,
+        custom_model=req.custom_model
+    )
     answer_text = rag_result["answer"]
 
     # Translate back to user language if needed
@@ -232,7 +241,7 @@ async def start_scraper():
     import sys
     log_file = open(SCRAPER_LOG_FILE, "a")
     scraper_process = subprocess.Popen(
-        [sys.executable, "bis_scraper.py"],
+        [sys.executable, "mega_scraper.py"],
         cwd=str(BASE_DIR),
         stdout=log_file,
         stderr=subprocess.STDOUT

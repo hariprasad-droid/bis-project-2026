@@ -1,0 +1,1 @@
+The project is not running. I see a 'SecurityError' and 'UnauthorizedAccess' in the terminal when trying to run 'npm run dev'. Pleasecd c:\bis\sihh\fronte
