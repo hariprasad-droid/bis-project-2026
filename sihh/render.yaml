@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: bis-sahayak-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OLLAMA_CLOUD_API_KEY
+        sync: false
+      - key: OLLAMA_CLOUD_MODEL
+        sync: false
+      - key: OLLAMA_CLOUD_URL
+        sync: false

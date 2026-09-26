@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BIS AI Assistant - YouTube Script</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #fff;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+        .visual {
+            background-color: #f1f8ff;
+            border-left: 4px solid #3498db;
+            padding: 10px 15px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        .script {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            font-style: italic;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>BIS AI Assistant - Project Explanation & YouTube Script</h1>
+
+    <h2>🎬 1. Hook & Introduction (0:00 - 0:45)</h2>
+    <div class="visual">Visual: Screen recording of the BIS AI Assistant interface, showing a user asking a question in Hindi and getting a precise answer.</div>
+    <div class="script">
+        "Have you ever tried navigating complex government standards or finding specific information on the Bureau of Indian Standards (BIS) website? It can be overwhelming. Today, I'm excited to present our solution: The BIS AI Assistant. It's an intelligent, multilingual, and voice-enabled conversational AI designed specifically to make BIS services and Indian Standards instantly accessible to everyone."
+    </div>
+
+    <h2>🚨 2. The Problem It Solves (0:45 - 1:30)</h2>
+    <div class="visual">Visual: Graphics showing scattered PDF documents, a complicated website, and people speaking different languages.</div>
+    <div class="script">
+        "The Bureau of Indian Standards offers a wealth of crucial information, but citizens often face three major hurdles:
+        <br>1. Information Overload: Data is scattered across thousands of PDFs and web pages.
+        <br>2. Language Barriers: Essential standards are often only available in English or technical jargon.
+        <br>3. Accessibility: Not everyone is comfortable typing complex queries.
+        <br>Our AI Assistant bridges this gap by acting as a 24/7 knowledgeable guide."
+    </div>
+
+    <h2>✨ 3. Key Features (1:30 - 3:00)</h2>
+    <div class="visual">Visual: Quick montage of the UI features as they are mentioned.</div>
+    <div class="script">
+        "Let's look at what makes this assistant powerful:
+        <br>• Retrieval-Augmented Generation (RAG): It doesn't just guess; it fetches exact paragraphs from official BIS documents before answering, eliminating hallucinations.
+        <br>• Multilingual Support & Voice: Users can speak their questions in multiple Indian languages, and the AI will reply back with text and voice.
+        <br>• Built-in Text Simplifier: A dedicated tool to convert formal, complex jargon into simple, everyday language.
+        <br>• Live Data Scraper Portal: An admin interface that can scrape new updates directly from the BIS website and integrate them into the AI's brain in real-time."
+    </div>
+
+    <h2>🏗️ 4. Architecture & Tech Stack (3:00 - 4:15)</h2>
+    <div class="visual">Visual: A clean architecture diagram showing Frontend -> Backend -> Vector DB & LLM.</div>
+    <div class="script">
+        "Under the hood, we've built a robust and scalable architecture:
+        <br>• Frontend: Built with React and Vite, utilizing Tailwind/CSS for a responsive, modern UI.
+        <br>• Backend: Powered by FastAPI in Python, ensuring high performance.
+        <br>• Vector Database: We use ChromaDB to store document embeddings securely.
+        <br>• AI Engine: We utilize Sentence Transformers for embeddings and dynamically switch between OpenRouter models and a local Ollama instance for text generation, ensuring high availability and privacy."
+    </div>
+
+    <h2>⚙️ 5. How It Works (The RAG Pipeline) (4:15 - 5:30)</h2>
+    <div class="visual">Visual: Animation of a document being chunked, converted to embeddings, and then retrieved when a user asks a question.</div>
+    <div class="script">
+        "How does it actually know the answers?
+        <br>1. Ingestion: We extract text from BIS PDFs and HTML pages, chunk them into smaller pieces, and convert them into mathematical vectors (embeddings).
+        <br>2. Retrieval: When a user asks a question, the system converts the query into a vector and finds the most relevant document chunks in ChromaDB.
+        <br>3. Generation: The retrieved context, along with the user's question, is sent to the LLM (Large Language Model) to generate a highly accurate, context-aware answer."
+    </div>
+
+    <h2>💻 6. Live Demo (5:30 - 7:00)</h2>
+    <div class="visual">Visual: Live walkthrough of the application.</div>
+    <div class="script">
+        "Let's see it in action.
+        <br>[Action: Type 'What are the standards for drinking water?']
+        <br>Notice how it provides a precise answer and cites the source document.
+        <br>[Action: Use the microphone to ask a question in Hindi]
+        <br>The AI understands the language, translates the intent, retrieves the context, and responds back perfectly.
+        <br>[Action: Open the Scraper Portal]
+        <br>And here is the Scraper Portal, where admins can fetch the latest notifications from the BIS website with a single click, keeping the AI's knowledge completely up-to-date."
+    </div>
+
+    <h2>🚀 7. Conclusion & Future Scope (7:00 - 7:45)</h2>
+    <div class="visual">Visual: Final slide with contact info or GitHub repository link.</div>
+    <div class="script">
+        "The BIS AI Assistant is more than just a chatbot; it's a step towards democratizing access to national standards and regulations. In the future, we plan to integrate WhatsApp support and real-time document parsing.
+        <br>Thank you for watching! Check out the GitHub link in the description to explore the code."
+    </div>
+
+</body>
+</html>

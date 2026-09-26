@@ -3,10 +3,8 @@ uvicorn
 pydantic
 sqlalchemy
 pymupdf
-langchain
-langchain-text-splitters
-sentence-transformers
-chromadb
-ollama
 beautifulsoup4
 python-dotenv
+supabase
+openai
+psycopg2-binary

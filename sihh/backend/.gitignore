@@ -1,0 +1,20 @@
+# Environments
+.env
+.env.local
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Data
+data/
+*.db
+*.sqlite3
+
+# Logs
+*.log

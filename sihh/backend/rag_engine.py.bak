@@ -7,33 +7,52 @@ from dotenv import load_dotenv
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
 
-from supabase import create_client, Client
-import openai
+import chromadb
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+VECTORSTORE_DIR = BASE_DIR / "vectorstore"
 
-_supabase_client = None
+_chroma_client = None
+_embedding_function = None
+_cross_encoder = None
+_cross_encoder_attempted = False
 
-def get_supabase_client() -> Client:
-    global _supabase_client
-    if _supabase_client is None:
-        if not SUPABASE_URL or not SUPABASE_KEY:
-            raise ValueError("SUPABASE_URL and SUPABASE_KEY must be set in .env")
-        _supabase_client = create_client(SUPABASE_URL, SUPABASE_KEY)
-    return _supabase_client
+# OpenRouter Free/Community Models in priority order
+OPENROUTER_MODELS = [
+    "inclusionai/ling-3.0-flash-fin:free",
+    "dots-studio/dots-3-note-preview:free",
+    "liquid/lfm-2.5-2.6b:free",
+    "google/gemma-4-26b-a4b-it:free",
+    "nvidia/nemotron-3.5-lightning:free",
+    "google/gemma-4-31b-it:free",
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
+]
 
-def get_embedding(text: str) -> list[float]:
-    if not OPENAI_API_KEY:
-        raise ValueError("OPENAI_API_KEY must be set in .env for embeddings")
-    openai.api_key = OPENAI_API_KEY
-    response = openai.embeddings.create(
-        input=text,
-        model="text-embedding-3-small"
-    )
-    return response.data[0].embedding
+def get_chroma_client():
+    global _chroma_client
+    if _chroma_client is None:
+        _chroma_client = chromadb.PersistentClient(path=str(VECTORSTORE_DIR))
+    return _chroma_client
 
+def get_embedding_function():
+    global _embedding_function
+    if _embedding_function is None:
+        from chromadb.utils import embedding_functions
+        _embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
+            model_name="all-MiniLM-L6-v2"
+        )
+    return _embedding_function
+
+def get_cross_encoder():
+    global _cross_encoder, _cross_encoder_attempted
+    if not _cross_encoder_attempted:
+        _cross_encoder_attempted = True
+        try:
+            from sentence_transformers import CrossEncoder
+            _cross_encoder = CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2', max_length=512)
+        except Exception as e:
+            print(f"[RAG] Warning: Could not load CrossEncoder: {e}")
+            _cross_encoder = None
+    return _cross_encoder
 
 def is_boilerplate(text: str) -> bool:
     """Filter out scraped navigation bar fragments from HTML pages."""
@@ -117,39 +136,41 @@ def normalize_bis_query(query: str) -> str:
         return f"{q_clean} {' '.join(expanded_terms)}"
     return q_clean
 
-# OpenRouter Free/Community Models in priority order
-OPENROUTER_MODELS = [
-    "inclusionai/ling-3.0-flash-fin:free",
-    "dots-studio/dots-3-note-preview:free",
-    "liquid/lfm-2.5-2.6b:free",
-    "google/gemma-4-26b-a4b-it:free",
-    "nvidia/nemotron-3.5-lightning:free",
-]
-
 def retrieve_chunks(query: str, top_k: int = 40):
-    """Dense retrieval from Supabase pgvector with boilerplate elimination."""
+    """Dense retrieval from ChromaDB knowledge base with boilerplate elimination."""
     search_query = normalize_bis_query(query)
     try:
-        query_embedding = get_embedding(search_query)
-        client = get_supabase_client()
-        
-        # Call the Supabase RPC function (match_documents)
-        response = client.rpc(
-            'match_documents',
-            {'query_embedding': query_embedding, 'match_threshold': 0.1, 'match_count': top_k}
-        ).execute()
-        
-        if not response.data:
-            return []
-            
-        docs_list = response.data
+        collection = get_chroma_client().get_collection(
+            name="bis_knowledge_base",
+            embedding_function=get_embedding_function()  # type: ignore
+        )
     except Exception as e:
-        print(f"[RAG] Supabase Query error: {e}")
+        print(f"[RAG] Collection error: {e}")
+        return []
+
+    try:
+        results = collection.query(
+            query_texts=[search_query],
+            n_results=top_k,
+        )
+    except Exception as e:
+        print(f"[RAG] Query error: {e}")
+        return []
+
+    docs_list = results.get('documents')
+    if not docs_list or not docs_list[0]:
         return []
 
     retrieved = []
     unfiltered = []
+    docs = docs_list[0]
     
+    metadatas_list = results.get('metadatas')
+    metadatas = metadatas_list[0] if metadatas_list else [{}] * len(docs)
+    
+    distances_list = results.get('distances')
+    distances = distances_list[0] if distances_list else [0] * len(docs)
+
     q_lower = query.lower()
     key_terms = [t for t in [
         "hallmark", "crs", "is 10500", "is 1293", "gold", "water", "fmcs",
@@ -159,12 +180,7 @@ def retrieve_chunks(query: str, top_k: int = 40):
         "bis act", "regulation", "fee", "lab", "testing", "consumer"
     ] if t in q_lower]
 
-    for item in docs_list:
-        doc = item.get('content', '')
-        meta = item.get('metadata', {})
-        # Note: pgvector typically returns similarity or distance. Assume distance.
-        dist = item.get('similarity', 0.5) 
-        
+    for doc, meta, dist in zip(docs, metadatas, distances):
         adjusted_dist = dist
         doc_lower = doc.lower()
         title_lower = str(meta.get("title") or meta.get("source") or "").lower()
@@ -181,11 +197,14 @@ def retrieve_chunks(query: str, top_k: int = 40):
             "raw_distance": dist
         }
 
+        # Track all results (unfiltered fallback)
         unfiltered.append(entry)
 
+        # Skip pure navigation menus
         if not is_boilerplate(doc):
             retrieved.append(entry)
 
+    # If boilerplate filter removed everything, fall back to unfiltered results
     if not retrieved and unfiltered:
         print("[RAG] Warning: All chunks filtered as boilerplate, using unfiltered results")
         retrieved = unfiltered
@@ -194,11 +213,24 @@ def retrieve_chunks(query: str, top_k: int = 40):
     return retrieved
 
 def rerank_chunks(query: str, chunks: list, top_n: int = 5):
-    """No cross-encoder available on Vercel. Return sorted chunks directly."""
+    """Cross-encoder neural reranking."""
     if not chunks:
         return []
-    # Just return the top chunks since they are already sorted by adjusted_distance
-    return chunks[:top_n]
+
+    cross_encoder = get_cross_encoder()
+    if not cross_encoder:
+        return sorted(chunks, key=lambda x: x.get("distance", float('inf')))[:top_n]
+
+    pairs = [[query, chunk['text']] for chunk in chunks]
+    try:
+        scores = cross_encoder.predict(pairs)
+        for i, chunk in enumerate(chunks):
+            chunk['rerank_score'] = float(scores[i])
+        reranked = sorted(chunks, key=lambda x: x['rerank_score'], reverse=True)
+        return reranked[:top_n]
+    except Exception as e:
+        print(f"[RAG] Cross-encoder error: {e}")
+        return sorted(chunks, key=lambda x: x.get("distance", float('inf')))[:top_n]
 
 def call_openrouter_llm(messages: list, api_key: str) -> str | None:
     """Executes completion across OpenRouter candidate models with fast fallback."""
@@ -295,17 +327,9 @@ def call_custom_openai_llm(messages: list, url: str, api_key: str, model_name: s
     return None
 
 def omni_llm_generate(messages: list, custom_api_url: str | None = None, custom_api_key: str | None = None, custom_model: str | None = None) -> str | None:
-    """Unified multi-tier API orchestrator: Custom -> Ollama Cloud -> OpenRouter pool -> Local Ollama."""
+    """Unified multi-tier API orchestrator: Custom -> OpenRouter pool -> Local Ollama."""
     if custom_api_url and custom_model:
         answer = call_custom_openai_llm(messages, custom_api_url, custom_api_key or "", custom_model)
-        if answer:
-            return answer
-
-    ollama_cloud_url = os.getenv("OLLAMA_CLOUD_URL")
-    ollama_cloud_key = os.getenv("OLLAMA_CLOUD_API_KEY")
-    ollama_cloud_model = os.getenv("OLLAMA_CLOUD_MODEL")
-    if ollama_cloud_url and ollama_cloud_key and ollama_cloud_model:
-        answer = call_custom_openai_llm(messages, ollama_cloud_url, ollama_cloud_key, ollama_cloud_model)
         if answer:
             return answer
 
@@ -352,10 +376,11 @@ def verify_citations(llm_response: str, retrieved_chunks: list) -> list[dict]:
 def get_vectorstore_stats() -> dict:
     """Return stats about the vectorstore for the /status endpoint."""
     try:
-        client = get_supabase_client()
-        # Basic count
-        response = client.table('documents').select('id', count='exact').limit(1).execute()
-        total_chunks = response.count or 0
+        collection = get_chroma_client().get_collection(
+            name="bis_knowledge_base",
+            embedding_function=get_embedding_function()  # type: ignore
+        )
+        total_chunks = collection.count()
 
         # Count sources from sources.json
         sources_file = BASE_DIR / "sources.json"
@@ -370,10 +395,18 @@ def get_vectorstore_stats() -> dict:
                 cat = info.get("category", "General")
                 categories[cat] = categories.get(cat, 0) + 1
 
+        # Vectorstore size on disk
+        vs_size = 0
+        vs_dir = BASE_DIR / "vectorstore"
+        if vs_dir.exists():
+            for f in vs_dir.rglob("*"):
+                if f.is_file():
+                    vs_size += f.stat().st_size
+
         return {
             "total_chunks": total_chunks,
             "total_files": total_files,
-            "vectorstore_size_mb": 0.0, # Managed by Supabase
+            "vectorstore_size_mb": round(vs_size / (1024 * 1024), 1),
             "categories": categories,
             "status": "ready" if total_chunks > 0 else "empty",
         }
