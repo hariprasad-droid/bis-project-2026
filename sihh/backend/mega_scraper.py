@@ -303,9 +303,13 @@ def extract_links_from_html(base_url: str, html_path: Path) -> set:
             soup = BeautifulSoup(f, "html.parser")
         links = set()
         for tag in soup.find_all("a", href=True):
-            href = urljoin(base_url, tag["href"].split("#")[0])
-            if href and not href.startswith(("javascript:", "mailto:", "tel:")):
-                links.add(href)
+            href_attr = tag.get("href")
+            if isinstance(href_attr, list):
+                href_attr = href_attr[0]
+            if href_attr:
+                href = urljoin(base_url, str(href_attr).split("#")[0])
+                if href and not href.startswith(("javascript:", "mailto:", "tel:")):
+                    links.add(href)
         return links
     except Exception as e:
         log.warning("  Error extracting links from %s: %s", html_path, e)
@@ -1033,6 +1037,16 @@ def run_all(source_filter: str | None = None, max_pages: int = 500, delay: float
     
     if FAILED_LOG_PATH.exists():
         log.info("  Failures logged: %s", FAILED_LOG_PATH)
+
+    log.info("Triggering data ingestion to Supabase DB...")
+    import subprocess
+    import sys
+    try:
+        # Run ingestion script
+        subprocess.run([sys.executable, str(BASE_DIR / "supabase_ingest.py")], check=True)
+        log.info("Ingestion completed successfully.")
+    except Exception as e:
+        log.error("Failed to run ingestion: %s", e)
 
 
 def main():

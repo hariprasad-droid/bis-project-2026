@@ -5,36 +5,36 @@ class PDFReport(FPDF):
     def header(self):
         self.set_font("helvetica", "B", 10)
         self.set_text_color(128, 128, 128)
-        self.cell(0, 10, "BIS AI Assistant - Comprehensive Project Report", 0, 1, "R")
+        self.cell(0, 10, "BIS AI Assistant - Comprehensive Project Report", 0, 1, "R") # type: ignore
 
     def footer(self):
         self.set_y(-15)
         self.set_font("helvetica", "I", 8)
         self.set_text_color(128, 128, 128)
-        self.cell(0, 10, f"Page {self.page_no()}", 0, 0, "C")
+        self.cell(0, 10, f"Page {self.page_no()}", 0, 0, "C") # type: ignore
 
     def add_title_page(self):
         self.add_page()
         self.set_y(100)
         self.set_font("helvetica", "B", 24)
         self.set_text_color(0, 0, 0)
-        self.cell(0, 20, "PROJECT REPORT", 0, 1, "C")
+        self.cell(0, 20, "PROJECT REPORT", 0, 1, "C") # type: ignore
         self.set_font("helvetica", "B", 18)
-        self.cell(0, 15, "BIS AI Assistant", 0, 1, "C")
+        self.cell(0, 15, "BIS AI Assistant", 0, 1, "C") # type: ignore
         self.set_font("helvetica", "I", 14)
-        self.cell(0, 15, "An Intelligent Conversational AI for the Bureau of Indian Standards", 0, 1, "C")
+        self.cell(0, 15, "An Intelligent Conversational AI for the Bureau of Indian Standards", 0, 1, "C") # type: ignore
         self.add_page()
 
     def chapter_title(self, num, title):
         self.set_font("helvetica", "B", 16)
         self.set_text_color(41, 128, 185)
-        self.cell(0, 10, f"{num}. {title}", 0, 1, "L")
+        self.cell(0, 10, f"{num}. {title}", 0, 1, "L") # type: ignore
         self.ln(4)
 
     def sub_chapter_title(self, title):
         self.set_font("helvetica", "B", 13)
         self.set_text_color(44, 62, 80)
-        self.cell(0, 8, title, 0, 1, "L")
+        self.cell(0, 8, title, 0, 1, "L") # type: ignore
         self.ln(2)
 
     def body_text(self, text):

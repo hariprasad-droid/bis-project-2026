@@ -56,16 +56,16 @@
         "file_type": "txt"
     },
     "html/bis-faq.html": {
-        "hash": "ff0b08e71171fcff3a815a7a877830e9",
-        "processed_at": "2026-09-09T15:00:08.493697",
+        "hash": "59765d55e15ea0a4e22c86cd86c829ed",
+        "processed_at": "2026-10-06T09:18:28.513100",
         "chunks": 1,
         "category": "FAQs",
         "title": "Bis Faq",
         "file_type": "html"
     },
     "html/consumer-affairs.html": {
-        "hash": "5959f802b0cd994b6801e5ec98bf83d5",
-        "processed_at": "2026-09-09T15:00:08.735724",
+        "hash": "dd9b190ced824b78ec31fca6ff2e56b6",
+        "processed_at": "2026-10-06T09:18:28.868811",
         "chunks": 1,
         "category": "Consumer Affairs",
         "title": "Consumer Affairs",
@@ -88,8 +88,8 @@
         "file_type": "html"
     },
     "html/hallmarking-overview_gold-monetization-scheme_lang-hi.html": {
-        "hash": "0d84ea9f03bed35f807fe337782bcdb1",
-        "processed_at": "2026-09-09T15:00:09.919953",
+        "hash": "ffbdc08752acaaab62a392c3e8b43bbb",
+        "processed_at": "2026-10-06T09:18:30.205973",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Gold Monetization Scheme",
@@ -104,8 +104,8 @@
         "file_type": "html"
     },
     "html/hallmarking-overview_hallmarking-centre_list-of-hallmarking-centres_lang-hi.html": {
-        "hash": "cf7149509969eebcc706904846857daa",
-        "processed_at": "2026-09-09T15:00:10.639570",
+        "hash": "12b7d1ae1acc8ec214ef97348a3e0508",
+        "processed_at": "2026-10-06T09:18:31.135233",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Hallmarking Centre List Of Hallmarking Centres",
@@ -128,8 +128,8 @@
         "file_type": "html"
     },
     "html/hallmarking-overview_hallmarking-faqs_bis-act-and-regulation-faq_lang-hi.html": {
-        "hash": "7e8bd376f33818ac204a3441c78726eb",
-        "processed_at": "2026-09-09T15:00:11.359771",
+        "hash": "c21021dc811d5f8120ec307e01642589",
+        "processed_at": "2026-10-06T09:18:31.684641",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Hallmarking Faqs Bis Act And Regulation Faq",
@@ -144,16 +144,16 @@
         "file_type": "html"
     },
     "html/hallmarking-overview_hallmarking-faqs_lang-hi.html": {
-        "hash": "9a91d06e38403e12c8d8a2088c2d8666",
-        "processed_at": "2026-09-09T15:00:12.009055",
+        "hash": "2c5e937b99071bcf0875e2d5f4b4a88c",
+        "processed_at": "2026-10-06T09:18:32.256181",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Hallmarking Faqs",
         "file_type": "html"
     },
     "html/hallmarking-overview_hallmarking-faqs_lang-hi__page_id-124584.html": {
-        "hash": "b341b7de0ccf02025f14e51f41f4a427",
-        "processed_at": "2026-09-09T15:00:12.163566",
+        "hash": "bac9a43980c4667fc9cd5b823381d59a",
+        "processed_at": "2026-10-06T09:18:32.661964",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Hallmarking Faqs Page Id 124584",
@@ -168,16 +168,16 @@
         "file_type": "html"
     },
     "html/hallmarking-overview_hallmarking-faqs_mandatory_lang-hi.html": {
-        "hash": "24176e3da267ccf0cd402e0b212d50a3",
-        "processed_at": "2026-09-09T15:00:12.698070",
+        "hash": "d5975d1d828c1e7da3f167f3fbc7b347",
+        "processed_at": "2026-10-06T09:18:33.009869",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Hallmarking Faqs Mandatory",
         "file_type": "html"
     },
     "html/hallmarking-overview_hallmarking-faqs_mandatory_lang-hi__page_id-124587.html": {
-        "hash": "cc5bd84954d5bd9ce4f1644004299452",
-        "processed_at": "2026-09-09T15:00:12.849439",
+        "hash": "34a9b779411a01991e2f797feaf8529a",
+        "processed_at": "2026-10-06T09:18:33.241112",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Hallmarking Faqs Mandatory Page Id 124587",
@@ -200,8 +200,8 @@
         "file_type": "html"
     },
     "html/hallmarking-overview_hallmarking-regulation-2018_lang-hi.html": {
-        "hash": "877673fcec42fe6ae31a77512b888a4a",
-        "processed_at": "2026-09-09T15:00:13.296651",
+        "hash": "2ec8d4af3b8e4a6ce1b0c94d646d5878",
+        "processed_at": "2026-10-06T09:18:33.482477",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Hallmarking Regulation 2018",
@@ -232,8 +232,8 @@
         "file_type": "html"
     },
     "html/hallmarking-overview_jewellers-registration-scheme_list-of-licensed-jewellers_lang-hi.html": {
-        "hash": "199628210d72908c3d8d8a93c3677efd",
-        "processed_at": "2026-09-09T15:00:14.025805",
+        "hash": "bcb52d0da55822656cb3a42eca9baebb",
+        "processed_at": "2026-10-06T09:18:33.817586",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Jewellers Registration Scheme List Of Licensed Jewellers",
@@ -248,16 +248,16 @@
         "file_type": "html"
     },
     "html/hallmarking-overview_mandatory-hallmarking-order_lang-hi.html": {
-        "hash": "eccfba968b1b977ae5e5ac16e1531980",
-        "processed_at": "2026-09-09T15:00:14.546438",
+        "hash": "3bf194a98e36fd1e2a2668d6e9a38766",
+        "processed_at": "2026-10-06T09:18:34.232849",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Overview Mandatory Hallmarking Order",
         "file_type": "html"
     },
     "html/hallmarking_single.html.html": {
-        "hash": "4beca8c52c549d5dd47fa87a721daa07",
-        "processed_at": "2026-09-09T15:00:15.206192",
+        "hash": "ff1337e74332996d0d09bcec39ee7cca",
+        "processed_at": "2026-10-06T09:18:34.746282",
         "chunks": 1,
         "category": "Hallmarking",
         "title": "Hallmarking Single.Html",
@@ -3430,5 +3430,61 @@
         "category": "Hallmarking",
         "title": "Phase Wise Coverage Of Districts Under Gold Mandatory Hallmarking",
         "file_type": "pdf"
+    },
+    "html/consumer-affairs_lang-hi.html": {
+        "hash": "a7d1890a026a0a5ba8696fb80796ac72",
+        "processed_at": "2026-10-06T09:18:29.161282",
+        "chunks": 1,
+        "category": "Consumer Affairs",
+        "title": "Consumer Affairs",
+        "file_type": "html"
+    },
+    "html/hallmarking-overview_gold-monetization-scheme_lang-hi_.html": {
+        "hash": "67e850865af085179be67957fe73b5d2",
+        "processed_at": "2026-10-06T09:18:30.401715",
+        "chunks": 1,
+        "category": "Hallmarking",
+        "title": "Hallmarking Overview Gold Monetization Scheme",
+        "file_type": "html"
+    },
+    "html/hallmarking-overview_hallmarking-faqs_lang-hi_.html": {
+        "hash": "aa80e71163cccf2ce1f9d8813e6a7b15",
+        "processed_at": "2026-10-06T09:18:32.437803",
+        "chunks": 1,
+        "category": "Hallmarking",
+        "title": "Hallmarking Overview Hallmarking Faqs",
+        "file_type": "html"
+    },
+    "html/index.php_about-bis_bis-act-rules-and-regulations.html": {
+        "hash": "87a7b62604aa7d667574d331d21a50b1",
+        "processed_at": "2026-10-06T09:18:35.258134",
+        "chunks": 1,
+        "category": "BIS Act & Regulations",
+        "title": "Index.Php About Bis Bis Act Rules And Regulations",
+        "file_type": "html"
+    },
+    "html/index.php_conformity-assessment.html": {
+        "hash": "cc8f4033fa1514f68a57c8cf05daf504",
+        "processed_at": "2026-10-06T09:18:35.427747",
+        "chunks": 1,
+        "category": "Product Certification",
+        "title": "Index.Php Conformity Assessment",
+        "file_type": "html"
+    },
+    "html/index.php_conformity-assessment_foreign-manufacturers-certification-scheme.html": {
+        "hash": "566aa455b5bf263be82382c7931e0d63",
+        "processed_at": "2026-10-06T09:18:35.718976",
+        "chunks": 1,
+        "category": "Product Certification",
+        "title": "Index.Php Conformity Assessment Foreign Manufacturers Certification Scheme",
+        "file_type": "html"
+    },
+    "html/index.php_conformity-assessment_laboratory-services.html": {
+        "hash": "1c9a78d1cad38881ab9fbe9a423c8c74",
+        "processed_at": "2026-10-06T09:18:37.781273",
+        "chunks": 38,
+        "category": "Product Certification",
+        "title": "Index.Php Conformity Assessment Laboratory Services",
+        "file_type": "html"
     }
 }

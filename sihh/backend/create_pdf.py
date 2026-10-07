@@ -5,13 +5,13 @@ class PDF(FPDF):
     def header(self):
         self.set_font("helvetica", "B", 16)
         self.set_text_color(44, 62, 80)
-        self.cell(0, 10, "BIS AI Assistant - Project Explanation & YouTube Script", 0, 1, "C")
+        self.cell(0, 10, "BIS AI Assistant - Project Explanation & YouTube Script", 0, 1, "C") # type: ignore
         self.ln(5)
 
     def chapter_title(self, title):
         self.set_font("helvetica", "B", 14)
         self.set_text_color(41, 128, 185)
-        self.cell(0, 10, title, 0, 1, "L")
+        self.cell(0, 10, title, 0, 1, "L") # type: ignore
         self.ln(2)
 
     def visual_cue(self, text):

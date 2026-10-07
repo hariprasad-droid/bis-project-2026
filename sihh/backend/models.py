@@ -33,3 +33,9 @@ class Feedback(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     message = relationship("Message", back_populates="feedback")
+
+class Setting(Base):
+    __tablename__ = "settings"
+
+    key = Column(String, primary_key=True, index=True)
+    value = Column(String)

@@ -107,7 +107,7 @@ def extract_text_from_html(file_path):
             tag.decompose()
         for tag in soup.find_all(attrs={"role": ["navigation", "banner", "contentinfo"]}):  # type: ignore
             tag.decompose()
-        for tag in soup.find_all(class_=lambda c: c and any(
+        for tag in soup.find_all(class_=lambda c: c and any(  # type: ignore
             kw in str(c).lower() for kw in [
                 "navbar", "nav-", "navigation", "menu", "sidebar",
                 "header", "footer", "breadcrumb", "skip-link",
@@ -115,7 +115,7 @@ def extract_text_from_html(file_path):
             ]
         )):
             tag.decompose()
-        for tag in soup.find_all(id=lambda i: i and any(
+        for tag in soup.find_all(id=lambda i: i and any(  # type: ignore
             kw in str(i).lower() for kw in [
                 "navbar", "nav-", "navigation", "menu", "sidebar",
                 "header", "footer", "breadcrumb"
@@ -127,8 +127,8 @@ def extract_text_from_html(file_path):
         main_content = (
             soup.find("main") or
             soup.find(attrs={"role": "main"}) or  # type: ignore
-            soup.find(id=lambda i: i and "content" in str(i).lower()) or
-            soup.find(class_=lambda c: c and "content" in str(c).lower())
+            soup.find(id=lambda i: i and "content" in str(i).lower()) or  # type: ignore
+            soup.find(class_=lambda c: c and "content" in str(c).lower())  # type: ignore
         )
         
         target = main_content if main_content else soup

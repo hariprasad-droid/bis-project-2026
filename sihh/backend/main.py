@@ -31,7 +31,7 @@ app = FastAPI(title="BIS AI Assistant API")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # In production, specify frontend origin
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -60,9 +60,37 @@ class FeedbackRequest(BaseModel):
     is_positive: bool
     comment: Optional[str] = None
 
+class SettingRequest(BaseModel):
+    key: str
+    value: str
+
 class SimplifyTextRequest(BaseModel):
     text: str
     language: str = "en"
+
+@app.post("/ingest")
+async def trigger_ingestion(background_tasks: BackgroundTasks):
+    """Triggers the Supabase document ingestion script in the background."""
+    def run_ingestion():
+        import subprocess
+        try:
+            print("Starting background ingestion...")
+            result = subprocess.run(
+                ["python", "supabase_ingest.py"], 
+                cwd=str(BASE_DIR),
+                capture_output=True,
+                text=True
+            )
+            print(f"Ingestion finished with code {result.returncode}")
+            if result.stdout:
+                print("STDOUT:", result.stdout)
+            if result.stderr:
+                print("STDERR:", result.stderr)
+        except Exception as e:
+            print(f"Ingestion failed: {e}")
+            
+    background_tasks.add_task(run_ingestion)
+    return {"status": "success", "message": "Ingestion started in the background. Check server logs for progress."}
 
 @app.post("/simplify")
 async def simplify_text_endpoint(req: SimplifyTextRequest):
@@ -150,8 +178,8 @@ async def feedback_endpoint(req: FeedbackRequest, db: Session = Depends(get_db))
         
     feedback = db.query(models.Feedback).filter(models.Feedback.message_id == req.message_id).first()
     if feedback:
-        feedback.is_positive = req.is_positive
-        feedback.comment = req.comment
+        feedback.is_positive = req.is_positive  # type: ignore
+        feedback.comment = req.comment  # type: ignore
     else:
         feedback = models.Feedback(
             message_id=req.message_id,
@@ -162,6 +190,22 @@ async def feedback_endpoint(req: FeedbackRequest, db: Session = Depends(get_db))
         
     db.commit()
     return {"status": "success"}
+
+@app.get("/settings")
+async def get_settings(db: Session = Depends(get_db)):
+    settings = db.query(models.Setting).all()
+    return {s.key: s.value for s in settings}
+
+@app.post("/settings")
+async def update_setting(req: SettingRequest, db: Session = Depends(get_db)):
+    setting = db.query(models.Setting).filter(models.Setting.key == req.key).first()
+    if setting:
+        setting.value = req.value  # type: ignore
+    else:
+        setting = models.Setting(key=req.key, value=req.value)
+        db.add(setting)
+    db.commit()
+    return {"status": "success", "key": setting.key, "value": setting.value}
 
 def run_ingest_script():
     try:
@@ -278,7 +322,7 @@ async def scraper_status():
 
 @app.get("/scraper/manifest")
 async def scraper_manifest():
-    manifest_path = BASE_DIR / "data" / "sources.json"
+    manifest_path = BASE_DIR / "data" / "mega_scraper_manifest.json"
     if not manifest_path.exists():
         return []
         

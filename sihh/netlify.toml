@@ -5,6 +5,7 @@
 
 [build.environment]
   NODE_VERSION = "20"
+  VITE_API_URL = "https://bis-sahayak-backend.onrender.com"
 
 [[redirects]]
   from = "/*"
